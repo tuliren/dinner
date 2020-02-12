@@ -6,7 +6,7 @@ import { Container } from '@material-ui/core';
 const App = () => {
   return (
     <Container className="Dinner" maxWidth="md">
-      <h1>Dinner Bill Split</h1>
+      <h1>Dinner Bill</h1>
       <Dinner/>
     </Container>
   );
