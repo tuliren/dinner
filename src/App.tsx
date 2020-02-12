@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
 import Dinner from './Dinner';
+import { Container } from '@material-ui/core';
 
 const App = () => {
   return (
-    <div className="App">
+    <Container className="Dinner" maxWidth="md">
       <h1>Dinner Bill Split</h1>
       <Dinner/>
-    </div>
+    </Container>
   );
 };
 
