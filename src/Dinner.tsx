@@ -269,9 +269,9 @@ class Dinner extends React.Component<IProps, IState> {
   renderPeople() {
     return (
       <Box>
-        <List dense={false}>
+        <List dense={false} component="nav">
           {this.state.people.map(({ name: person }, index: number) => (
-            <ListItem key={'person-' + index}>
+            <ListItem button key={'person-' + index}>
               <ListItemAvatar>
                 <Avatar>
                   <AccountCircleIcon/>
@@ -318,9 +318,9 @@ class Dinner extends React.Component<IProps, IState> {
   renderItems() {
     return (
       <Box>
-        <List dense={false}>
+        <List dense={false} component="nav">
           {this.state.items.map(({ name, price }, index: number) => (
-            <ListItem key={'person-' + index}>
+            <ListItem button key={'person-' + index}>
               <ListItemAvatar>
                 <Avatar>
                   <FastfoodIcon/>
@@ -392,7 +392,7 @@ class Dinner extends React.Component<IProps, IState> {
 
           <TableBody>
             {this.state.items.map(({ id: itemId, name: itemName, price: itemPrice }, itemIndex: number) =>
-              <StyledTableRow key={'item-' + itemIndex}>
+              <StyledTableRow hover key={'item-' + itemIndex}>
                 <StyledTableCell>{itemName}</StyledTableCell>
                 <StyledTableCell>${itemPrice.toFixed(2)}</StyledTableCell>
                 {this.state.people.map(({ id: personId, name: person }, personIndex: number) => (
@@ -408,7 +408,7 @@ class Dinner extends React.Component<IProps, IState> {
               </StyledTableRow>,
             )}
 
-            <StyledTableRow key={'dinner-total'}>
+            <StyledTableRow hover key={'dinner-total'}>
               <StyledTableCell>All Food</StyledTableCell>
               <StyledTableCell>${this.getAllFoodPrice().toFixed(2)}</StyledTableCell>
               {this.state.people.map(({ id: personId }, personIndex: number) => (
@@ -418,7 +418,7 @@ class Dinner extends React.Component<IProps, IState> {
               ))}
             </StyledTableRow>
 
-            <StyledTableRow key={'dinner-tax'}>
+            <StyledTableRow hover key={'dinner-tax'}>
               <StyledTableCell>Tax</StyledTableCell>
               <StyledTableCell>
                 <TextField
@@ -438,7 +438,7 @@ class Dinner extends React.Component<IProps, IState> {
               ))}
             </StyledTableRow>
 
-            <StyledTableRow key={'dinner-tip'}>
+            <StyledTableRow hover key={'dinner-tip'}>
               <StyledTableCell>Tip</StyledTableCell>
               <StyledTableCell>
                 <TextField
@@ -458,7 +458,7 @@ class Dinner extends React.Component<IProps, IState> {
               ))}
             </StyledTableRow>
 
-            <StyledTableRow key={'dinner-tip'}>
+            <StyledTableRow hover key={'dinner-tip'}>
               <StyledTableCell>Total</StyledTableCell>
               <StyledTableCell>${this.getTotalPrice().toFixed(2)}</StyledTableCell>
               {this.state.people.map(({ id: personId }, personIndex: number) => (
