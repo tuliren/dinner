@@ -1,10 +1,9 @@
 import React from 'react';
 import { BottomNavigation, BottomNavigationAction, Link } from '@material-ui/core';
-import CopyrightIcon from '@material-ui/icons/Copyright';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import PageviewIcon from '@material-ui/icons/Pageview';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 
 class Footer extends React.Component {
   public render() {
@@ -22,10 +21,10 @@ class Footer extends React.Component {
           <BottomNavigationAction
             label={(
               <span className='site-pv'>
-                <span className="busuanzi-value" id="busuanzi_value_site_pv"/>
+                <span className="busuanzi-value" id="busuanzi_value_page_pv"/>
               </span>
             )}
-            icon={<VisibilityIcon fontSize="small"/>}>
+            icon={<PageviewIcon fontSize="small"/>}>
           </BottomNavigationAction>
           <BottomNavigationAction
             component={Link}
