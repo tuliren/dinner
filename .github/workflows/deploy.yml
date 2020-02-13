@@ -27,6 +27,8 @@ jobs:
           ${{ runner.os }}-yarn-
     - name: Install dependencies
       run: yarn install
+    - name: Run unit tests
+      run: yarn ci
     - name: Build website
       run: yarn build
     - name: Deploy application
