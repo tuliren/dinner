@@ -458,7 +458,7 @@ class Dinner extends React.Component<IProps, IState> {
               ))}
             </StyledTableRow>
 
-            <StyledTableRow hover key={'dinner-tip'}>
+            <StyledTableRow hover key={'dinner-person-tip'}>
               <StyledTableCell>Total</StyledTableCell>
               <StyledTableCell>${this.getTotalPrice().toFixed(2)}</StyledTableCell>
               {this.state.people.map(({ id: personId }, personIndex: number) => (
