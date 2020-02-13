@@ -36,7 +36,6 @@ jobs:
       with:
         personal_token: ${{ secrets.PERSONAL_TOKEN }}
         publish_dir: ./build
-        keep_files: true
         user_name: tuliren
         user_email: tuliren@users.noreply.github.com
         commit_message: ${{ github.event.head_commit.message }}
