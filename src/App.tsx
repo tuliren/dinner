@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { Container } from '@material-ui/core';
 import Dinner from './Dinner';
 import Footer from './Footer';
