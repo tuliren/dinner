@@ -7,7 +7,6 @@ import {
   Checkbox,
   Divider,
   IconButton,
-  Input,
   InputAdornment,
   List,
   ListItem,
@@ -25,7 +24,6 @@ import {
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddIcon from '@material-ui/icons/Add';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -132,11 +130,11 @@ class Dinner extends React.Component<IProps, IState> {
   };
 
   handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ tax: parseFloat(event.target.value) });
+    this.setState({ tax: parseFloat(event.target.value) || 0 });
   };
 
   handleTipChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ tip: parseFloat(event.target.value) });
+    this.setState({ tip: parseFloat(event.target.value) || 0 });
   };
 
   handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -354,6 +352,9 @@ class Dinner extends React.Component<IProps, IState> {
               value={this.state.itemPriceToAdd}
               required={true}
               onChange={this.handleItemPriceChange}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              }}
             />
             &nbsp;&nbsp;&nbsp;
             <TextField
@@ -420,17 +421,14 @@ class Dinner extends React.Component<IProps, IState> {
             <StyledTableRow key={'dinner-tax'}>
               <StyledTableCell>Tax</StyledTableCell>
               <StyledTableCell>
-                <Input
+                <TextField
                   type="number"
-                  placeholder="enter tax amount"
                   value={this.state.tax || ''}
                   required={false}
                   onChange={this.handleTaxChange}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <AttachMoneyIcon fontSize="small"/>
-                    </InputAdornment>
-                  }
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
                 />
               </StyledTableCell>
               {this.state.people.map(({ id: personId }, personIndex: number) => (
@@ -443,17 +441,14 @@ class Dinner extends React.Component<IProps, IState> {
             <StyledTableRow key={'dinner-tip'}>
               <StyledTableCell>Tip</StyledTableCell>
               <StyledTableCell>
-                <Input
+                <TextField
                   type="number"
-                  placeholder="enter tip amount"
                   value={this.state.tip || ''}
                   required={false}
                   onChange={this.handleTipChange}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <AttachMoneyIcon fontSize="small"/>
-                    </InputAdornment>
-                  }
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
                 />
               </StyledTableCell>
               {this.state.people.map(({ id: personId }, personIndex: number) => (
