@@ -30,6 +30,7 @@ class Footer extends React.Component {
             component={Link}
             href="https://github.com/tuliren/dinner"
             target="_blank"
+            rel="noreferrer"
             label="Source"
             icon={<GitHubIcon fontSize="small"/>}
           />
@@ -37,6 +38,7 @@ class Footer extends React.Component {
             component={Link}
             href="https://github.com/tuliren"
             target="_blank"
+            rel="noreferrer"
             label="(c) 2020 LiRen"
             icon={<PersonIcon fontSize="small"/>}
           />
