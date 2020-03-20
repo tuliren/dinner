@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/dinner/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/dinner/static/js/main.bd1b80d7.chunk.js",
-    "main.js.map": "/dinner/static/js/main.bd1b80d7.chunk.js.map",
+    "main.js": "/dinner/static/js/main.d0e5ac53.chunk.js",
+    "main.js.map": "/dinner/static/js/main.d0e5ac53.chunk.js.map",
     "runtime-main.js": "/dinner/static/js/runtime-main.b322ae3b.js",
     "runtime-main.js.map": "/dinner/static/js/runtime-main.b322ae3b.js.map",
     "static/js/2.bf57cb93.chunk.js": "/dinner/static/js/2.bf57cb93.chunk.js",
     "static/js/2.bf57cb93.chunk.js.map": "/dinner/static/js/2.bf57cb93.chunk.js.map",
     "index.html": "/dinner/index.html",
-    "precache-manifest.8f4080624f7505eada864d1f1055cdf7.js": "/dinner/precache-manifest.8f4080624f7505eada864d1f1055cdf7.js",
+    "precache-manifest.ac8e0fd877ae25ca70ab0c5c00e5a6df.js": "/dinner/precache-manifest.ac8e0fd877ae25ca70ab0c5c00e5a6df.js",
     "service-worker.js": "/dinner/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/dinner/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.bf57cb93.chunk.js.LICENSE.txt": "/dinner/static/js/2.bf57cb93.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.b322ae3b.js",
     "static/js/2.bf57cb93.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.bd1b80d7.chunk.js"
+    "static/js/main.d0e5ac53.chunk.js"
   ]
 }
