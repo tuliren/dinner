@@ -2,17 +2,9 @@ import React from 'react';
 import { uuid } from './utility';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import {
-  Avatar,
-  Box,
   Checkbox,
   Divider,
-  IconButton,
   InputAdornment,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
   Paper,
   Table,
   TableBody,
@@ -22,11 +14,9 @@ import {
   TableRow,
   TextField,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
 import { Item, Person } from './types';
 import People from './People';
+import Items from './Items';
 
 const ID_DELIMITER = '\t';
 
@@ -42,9 +32,6 @@ interface IState {
 
   tax: number;
   tip: number;
-  personToAdd: string;
-  itemNameToAdd: string;
-  itemPriceToAdd: string;
 }
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -87,14 +74,8 @@ class Dinner extends React.Component<IProps, IState> {
       links: {},
       tax: 0,
       tip: 0,
-      personToAdd: '',
-      itemNameToAdd: '',
-      itemPriceToAdd: '',
     };
 
-    this.handlePersonChange = this.handlePersonChange.bind(this);
-    this.handleItemNameChange = this.handleItemNameChange.bind(this);
-    this.handleItemPriceChange = this.handleItemPriceChange.bind(this);
     this.handleLinkChange = this.handleLinkChange.bind(this);
 
     this.addPerson = this.addPerson.bind(this);
@@ -105,18 +86,6 @@ class Dinner extends React.Component<IProps, IState> {
 
     this.getLinkStatus = this.getLinkStatus.bind(this);
   }
-
-  handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ personToAdd: event.target.value });
-  };
-
-  handleItemNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ itemNameToAdd: event.target.value });
-  };
-
-  handleItemPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ itemPriceToAdd: event.target.value });
-  };
 
   handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ tax: parseFloat(event.target.value) || 0 });
@@ -145,7 +114,6 @@ class Dinner extends React.Component<IProps, IState> {
   addPerson = (personName: string) => {
     const people = this.state.people;
     people.push({ id: uuid(), name: personName });
-    this.setState({ people, personToAdd: '' });
   };
 
   removePerson = (index: number) => {
@@ -162,25 +130,16 @@ class Dinner extends React.Component<IProps, IState> {
     this.setState({ links, people });
   };
 
-  addItem = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (this.state.itemPriceToAdd) {
-      const items = this.state.items;
-      items.push({
-        id: uuid(),
-        name: this.state.itemNameToAdd.trim(),
-        price: parseFloat(this.state.itemPriceToAdd),
-      });
-      this.setState({
-        items,
-        itemNameToAdd: '',
-        itemPriceToAdd: '',
-      });
-    }
+  addItem = (itemName: string, itemPrice: number) => {
+    const items = this.state.items;
+    items.push({
+      id: uuid(),
+      name: itemName,
+      price: itemPrice,
+    });
   };
 
-  removeItem = (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
-    event.preventDefault();
+  removeItem = (index: number) => {
     const links = this.state.links;
     const items = this.state.items;
     delete links[items[index].id];
@@ -244,66 +203,6 @@ class Dinner extends React.Component<IProps, IState> {
       + this.getPersonTax(personId)
       + this.getPersonTip(personId);
   };
-
-  renderItems() {
-    return (
-      <Box>
-        <List dense={false} component="nav">
-          {this.state.items.map(({ name, price }, index: number) => (
-            <ListItem button key={'person-' + index}>
-              <ListItemAvatar>
-                <Avatar>
-                  <FastfoodIcon/>
-                </Avatar>
-              </ListItemAvatar>
-
-              <ListItemText primary={'$' + price.toFixed(2) + (name ? ' ' + name : '')}/>
-
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="start"
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => this.removeItem(event, index)}
-                >
-                  <DeleteIcon/>
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-          <ListItem key="person-add">
-            <ListItemAvatar>
-              <Avatar>
-                <FastfoodIcon/>
-              </Avatar>
-            </ListItemAvatar>
-
-            <TextField
-              label="Item Price"
-              type="number"
-              value={this.state.itemPriceToAdd}
-              required={true}
-              onChange={this.handleItemPriceChange}
-              InputProps={{
-                startAdornment: <InputAdornment position="start">$</InputAdornment>,
-              }}
-            />
-            &nbsp;&nbsp;&nbsp;
-            <TextField
-              label="Item Name"
-              value={this.state.itemNameToAdd}
-              required={false}
-              onChange={this.handleItemNameChange}
-            />
-
-            <ListItemSecondaryAction>
-              <IconButton edge="start" onClick={this.addItem}>
-                <AddIcon/>
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
-      </Box>
-    );
-  }
 
   renderBill() {
     return (
@@ -417,7 +316,11 @@ class Dinner extends React.Component<IProps, IState> {
         <Divider/>
         <br/>
         <h2>Food</h2>
-        {this.renderItems()}
+        <Items
+          items={this.state.items}
+          addItem={this.addItem}
+          removeItem={this.removeItem}
+        />
         <br/>
         <Divider/>
         <br/>
