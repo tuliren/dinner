@@ -22,24 +22,13 @@ import {
   TableRow,
   TextField,
 } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { Item, Person } from './types';
+import People from './People';
 
 const ID_DELIMITER = '\t';
-
-type Item = {
-  id: string;
-  price: number;
-  name?: string;
-}
-
-type Person = {
-  id: string;
-  name: string;
-}
 
 interface IProps {
 }
@@ -153,23 +142,13 @@ class Dinner extends React.Component<IProps, IState> {
     this.setState({ links });
   };
 
-  addPerson = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (this.state.personToAdd) {
-      const people = this.state.people;
-      people.push({
-        id: uuid(),
-        name: this.state.personToAdd.trim(),
-      });
-      this.setState({
-        people,
-        personToAdd: '',
-      });
-    }
+  addPerson = (personName: string) => {
+    const people = this.state.people;
+    people.push({ id: uuid(), name: personName });
+    this.setState({ people, personToAdd: '' });
   };
 
-  removePerson = (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
-    event.preventDefault();
+  removePerson = (index: number) => {
     const links = this.state.links;
     const people = this.state.people;
     const personId = people[index].id;
@@ -265,55 +244,6 @@ class Dinner extends React.Component<IProps, IState> {
       + this.getPersonTax(personId)
       + this.getPersonTip(personId);
   };
-
-  renderPeople() {
-    return (
-      <Box>
-        <List dense={false} component="nav">
-          {this.state.people.map(({ name: person }, index: number) => (
-            <ListItem button key={'person-' + index}>
-              <ListItemAvatar>
-                <Avatar>
-                  <AccountCircleIcon/>
-                </Avatar>
-              </ListItemAvatar>
-
-              <ListItemText primary={person}/>
-
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="start"
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => this.removePerson(event, index)}
-                >
-                  <DeleteIcon/>
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-          <ListItem key="person-add">
-            <ListItemAvatar>
-              <Avatar>
-                <AccountCircleIcon/>
-              </Avatar>
-            </ListItemAvatar>
-
-            <TextField
-              label="Person Name"
-              value={this.state.personToAdd}
-              required={true}
-              onChange={this.handlePersonChange}
-            />
-
-            <ListItemSecondaryAction>
-              <IconButton edge="start" onClick={this.addPerson}>
-                <PersonAddIcon/>
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
-      </Box>
-    );
-  }
 
   renderItems() {
     return (
@@ -478,7 +408,11 @@ class Dinner extends React.Component<IProps, IState> {
       <>
         <Divider/>
         <h2>People</h2>
-        {this.renderPeople()}
+        <People
+          people={this.state.people}
+          addPerson={this.addPerson}
+          removePerson={this.removePerson}
+        />
         <br/>
         <Divider/>
         <br/>
