@@ -14,7 +14,7 @@ import {
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import { Item } from './types';
+import { Item } from './utility';
 
 interface IProps {
   items: Item[];

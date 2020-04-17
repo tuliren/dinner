@@ -1,24 +1,9 @@
 import React from 'react';
-import { uuid } from './utility';
-import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
-import {
-  Checkbox,
-  Divider,
-  InputAdornment,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from '@material-ui/core';
-import { Item, Person } from './types';
+import { Item, Person, uuid } from './utility';
+import { Divider } from '@material-ui/core';
 import People from './People';
 import Items from './Items';
-
-const ID_DELIMITER = '\t';
+import Bill from './Bill';
 
 interface IProps {
 }
@@ -33,28 +18,6 @@ interface IState {
   tax: number;
   tip: number;
 }
-
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: theme.palette.grey.A400,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }),
-)(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.background.default,
-      },
-    },
-  }),
-)(TableRow);
 
 class Dinner extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -83,20 +46,9 @@ class Dinner extends React.Component<IProps, IState> {
 
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
-
-    this.getLinkStatus = this.getLinkStatus.bind(this);
   }
 
-  handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ tax: parseFloat(event.target.value) || 0 });
-  };
-
-  handleTipChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ tip: parseFloat(event.target.value) || 0 });
-  };
-
-  handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const [personId, itemId] = event.target.value.split(ID_DELIMITER);
+  handleLinkChange = (personId: string, itemId: string) => {
     const links = this.state.links;
     if (links[itemId] === undefined) {
       links[itemId] = [personId];
@@ -147,161 +99,6 @@ class Dinner extends React.Component<IProps, IState> {
     this.setState({ links, items });
   };
 
-  getLinkStatus = (personId: string, itemId: string): boolean => {
-    return this.state.links[itemId] !== undefined && this.state.links[itemId].includes(personId);
-  };
-
-  getAllFoodPrice = (): number => {
-    return this.state.items.map(i => i.price).reduce((a, b) => a + b, 0);
-  };
-
-  getPersonFoodPrice = (personId: string): number => {
-    const personItems: Array<{
-      itemPrice: number;
-      peopleCount: number;
-    }> = [];
-
-    for (const [itemId, personIds] of Object.entries(this.state.links)) {
-      if (personIds.includes(personId)) {
-        const itemPrice = this.state.items.filter(item => item.id === itemId)[0].price;
-        const peopleCount = personIds.length;
-        personItems.push({ itemPrice, peopleCount });
-      }
-    }
-
-    return personItems
-      .map(({ itemPrice, peopleCount }) => itemPrice / peopleCount)
-      .reduce((a, b) => a + b, 0);
-  };
-
-  getPersonTax = (personId: string): number => {
-    const totalPrice = this.getAllFoodPrice();
-    if (totalPrice === 0) {
-      return 0;
-    }
-    const totalTax = this.state.tax;
-    const personPrice = this.getPersonFoodPrice(personId);
-    return personPrice * totalTax / totalPrice;
-  };
-
-  getPersonTip = (personId: string): number => {
-    const totalPrice = this.getAllFoodPrice();
-    if (totalPrice === 0) {
-      return 0;
-    }
-    const totalTip = this.state.tip;
-    const personPrice = this.getPersonFoodPrice(personId);
-    return personPrice * totalTip / totalPrice;
-  };
-
-  getTotalPrice = (): number => {
-    return this.getAllFoodPrice() + this.state.tax + this.state.tip;
-  };
-
-  getPersonTotal = (personId: string): number => {
-    return this.getPersonFoodPrice(personId)
-      + this.getPersonTax(personId)
-      + this.getPersonTip(personId);
-  };
-
-  renderBill() {
-    return (
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <StyledTableRow>
-              <StyledTableCell key="item">Item</StyledTableCell>
-              <StyledTableCell key="price">Price</StyledTableCell>
-
-              {this.state.people.map(({ name: person }, index: number) =>
-                <StyledTableCell key={'person-' + index}>{person}</StyledTableCell>)
-              }
-            </StyledTableRow>
-          </TableHead>
-
-          <TableBody>
-            {this.state.items.map(({ id: itemId, name: itemName, price: itemPrice }, itemIndex: number) =>
-              <StyledTableRow hover key={'item-' + itemIndex}>
-                <StyledTableCell>{itemName}</StyledTableCell>
-                <StyledTableCell>${itemPrice.toFixed(2)}</StyledTableCell>
-                {this.state.people.map(({ id: personId, name: person }, personIndex: number) => (
-                  <StyledTableCell key={'item-person-' + personIndex}>
-                    <Checkbox
-                      checked={this.getLinkStatus(personId, itemId)}
-                      value={personId + ID_DELIMITER + itemId}
-                      color="primary"
-                      onChange={this.handleLinkChange}
-                    />
-                  </StyledTableCell>
-                ))}
-              </StyledTableRow>,
-            )}
-
-            <StyledTableRow hover key={'dinner-total'}>
-              <StyledTableCell>All Food</StyledTableCell>
-              <StyledTableCell>${this.getAllFoodPrice().toFixed(2)}</StyledTableCell>
-              {this.state.people.map(({ id: personId }, personIndex: number) => (
-                <StyledTableCell key={'person-' + personIndex}>
-                  ${this.getPersonFoodPrice(personId).toFixed(2)}
-                </StyledTableCell>
-              ))}
-            </StyledTableRow>
-
-            <StyledTableRow hover key={'dinner-tax'}>
-              <StyledTableCell>Tax</StyledTableCell>
-              <StyledTableCell>
-                <TextField
-                  type="number"
-                  value={this.state.tax || ''}
-                  required={false}
-                  onChange={this.handleTaxChange}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                  }}
-                />
-              </StyledTableCell>
-              {this.state.people.map(({ id: personId }, personIndex: number) => (
-                <StyledTableCell key={'tax-person-' + personIndex}>
-                  ${this.getPersonTax(personId).toFixed(2)}
-                </StyledTableCell>
-              ))}
-            </StyledTableRow>
-
-            <StyledTableRow hover key={'dinner-tip'}>
-              <StyledTableCell>Tip</StyledTableCell>
-              <StyledTableCell>
-                <TextField
-                  type="number"
-                  value={this.state.tip || ''}
-                  required={false}
-                  onChange={this.handleTipChange}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                  }}
-                />
-              </StyledTableCell>
-              {this.state.people.map(({ id: personId }, personIndex: number) => (
-                <StyledTableCell key={'tip-person-' + personIndex}>
-                  ${this.getPersonTip(personId).toFixed(2)}
-                </StyledTableCell>
-              ))}
-            </StyledTableRow>
-
-            <StyledTableRow hover key={'dinner-person-tip'}>
-              <StyledTableCell>Total</StyledTableCell>
-              <StyledTableCell>${this.getTotalPrice().toFixed(2)}</StyledTableCell>
-              {this.state.people.map(({ id: personId }, personIndex: number) => (
-                <StyledTableCell key={'tip-person-' + personIndex}>
-                  ${this.getPersonTotal(personId).toFixed(2)}
-                </StyledTableCell>
-              ))}
-            </StyledTableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
-  }
-
   public render() {
     return (
       <>
@@ -325,7 +122,12 @@ class Dinner extends React.Component<IProps, IState> {
         <Divider/>
         <br/>
         <h2>Bill</h2>
-        {this.renderBill()}
+        <Bill
+          people={this.state.people}
+          items={this.state.items}
+          links={this.state.links}
+          handleLinkChange={this.handleLinkChange}
+        />
         <br/>
         <br/>
       </>

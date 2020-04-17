@@ -13,7 +13,7 @@ import {
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { Person } from './types';
+import { Person } from './utility';
 
 interface IProps {
   people: Person[];
