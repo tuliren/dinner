@@ -66,6 +66,7 @@ class Dinner extends React.Component<IProps, IState> {
   addPerson = (personName: string) => {
     const people = this.state.people;
     people.push({ id: uuid(), name: personName });
+    this.setState({ people });
   };
 
   removePerson = (index: number) => {
@@ -89,6 +90,7 @@ class Dinner extends React.Component<IProps, IState> {
       name: itemName,
       price: itemPrice,
     });
+    this.setState({ items });
   };
 
   removeItem = (index: number) => {
